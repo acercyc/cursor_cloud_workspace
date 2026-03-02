@@ -24,9 +24,32 @@ Use this skill **every time** the user asks for a completely new task, meaning a
    /workspace/<task_folder_name>/
    ```
 
-3. **Inform the user** that you created the folder and will place all task-related files inside it.
+3. **Add a README.md** inside the new folder. This helps future sessions quickly understand the purpose and contents of the folder. The README should include:
+   - **Title** matching the task name.
+   - **Purpose** (one or two sentences on what this task is about).
+   - **Usage** (how to run or use the code, if applicable).
+   - **Key files** (brief descriptions of the main files, to be updated as the task progresses).
 
-4. **Place all files for that task inside the folder.** Any source code, configs, tests, or documentation produced for the task should live under this folder unless the user specifies otherwise.
+   Keep it short. A few lines per section is enough. Update the README as the task evolves.
+
+   Template:
+   ```markdown
+   # <Task Title>
+
+   ## Purpose
+   <What this task does and why.>
+
+   ## Usage
+   <How to run or use it.>
+
+   ## Key files
+   - `file1` -- description
+   - `file2` -- description
+   ```
+
+4. **Inform the user** that you created the folder and will place all task-related files inside it.
+
+5. **Place all files for that task inside the folder.** Any source code, configs, tests, or documentation produced for the task should live under this folder unless the user specifies otherwise.
 
 ## Examples
 
