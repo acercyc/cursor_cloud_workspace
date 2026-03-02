@@ -46,3 +46,20 @@
 - `us_stock_analysis/sector_analysis.ipynb` -- Jupyter notebook with 8 sections and 6 chart types
 
 **Result:** Notebook runs end-to-end producing 6 charts: ticker counts per sector, sector avg intraday return curves, per-sector individual ticker return subplots, stacked volume profile, end-of-day performance bar chart, and sector correlation heatmap. All 11 GICS sectors covered across 501 tickers.
+
+---
+
+### Project refactor — 2026-03-02
+
+**Purpose:** Reorganize the flat project structure into a pipeline-oriented layout (universe, collect, analyze, report) that scales as new analyses are added.
+
+**Key files:**
+- `stock_analysis/universe.py` -- renamed from sp500.py, added sector/name map helpers
+- `stock_analysis/earnings.py` -- new module extracted from ad-hoc earnings logic
+- `scripts/analyze_tickers.py`, `scripts/download_intraday.py`, `scripts/fetch_earnings.py` -- CLI scripts moved to scripts/
+- `notebooks/sector_analysis.ipynb` -- moved from root
+- `data/reference/`, `data/market/`, `data/earnings/` -- split data by type
+- `output/tickers/`, `output/sector/` -- split output by type
+- `pyproject.toml` -- makes stock_analysis pip-installable
+
+**Result:** All scripts, notebook, and modules tested end-to-end. Clean separation of library code, CLI scripts, notebooks, and data by category.
