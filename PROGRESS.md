@@ -35,3 +35,14 @@
 - `us_stock_analysis/data/sp500_5min_2026-02-27.csv` -- 39,035 rows across 501 tickers (4.5 MB)
 
 **Result:** Successfully downloaded Friday 2026-02-27 data. 78 bars per ticker (full 9:30am-4pm session in 5-min intervals). Only BF.B and BRK.B failed (dot-notation ticker issue in yfinance).
+
+---
+
+### Sector intraday analysis notebook — 2026-03-02
+
+**Purpose:** Categorize all S&P 500 tickers by GICS sector and visualize intraday patterns per sector using Jupyter Notebook.
+
+**Key files:**
+- `us_stock_analysis/sector_analysis.ipynb` -- Jupyter notebook with 8 sections and 6 chart types
+
+**Result:** Notebook runs end-to-end producing 6 charts: ticker counts per sector, sector avg intraday return curves, per-sector individual ticker return subplots, stacked volume profile, end-of-day performance bar chart, and sector correlation heatmap. All 11 GICS sectors covered across 501 tickers.
