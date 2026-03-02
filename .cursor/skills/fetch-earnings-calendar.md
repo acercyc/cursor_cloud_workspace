@@ -7,7 +7,18 @@ Use this skill when the user asks for upcoming earnings reports, earnings dates,
 ## Prerequisites
 
 - Python venv at `us_stock_analysis/.venv` with `yfinance` and `pandas` installed.
-- S&P 500 ticker list at `us_stock_analysis/data/sp500_tickers.txt` (one ticker per line). If missing, regenerate it by running `python -m stock_analysis.sp500` from the `us_stock_analysis/` directory.
+- S&P 500 ticker list at `us_stock_analysis/data/reference/sp500_tickers.txt` (one ticker per line). If missing, regenerate it by running `python -m stock_analysis.universe` from the `us_stock_analysis/` directory.
+
+## Quick path (preferred)
+
+If the `stock_analysis/earnings.py` module exists, use the built-in script:
+
+```bash
+cd us_stock_analysis && source .venv/bin/activate
+python scripts/fetch_earnings.py --days 14
+```
+
+This handles all pitfalls automatically and saves both CSV and Markdown to `data/earnings/`. Fall back to the manual procedure below only if the module is unavailable.
 
 ## Procedure
 
@@ -33,7 +44,7 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # Load tickers
-tickers_raw = [t.strip() for t in open('data/sp500_tickers.txt') if t.strip()]
+tickers_raw = [t.strip() for t in open('data/reference/sp500_tickers.txt') if t.strip()]
 tickers_yf = [t.replace('.', '-') for t in tickers_raw]
 ticker_map = dict(zip(tickers_yf, tickers_raw))
 
@@ -65,7 +76,7 @@ df = pd.DataFrame(results).sort_values('Earnings Date')
 - Sort by Earnings Date ascending.
 - Format revenue as `$X.XB` and EPS as `$X.XX`.
 - Present as a markdown table to the user.
-- Save the result to `us_stock_analysis/data/upcoming_earnings_<start>_<end>.csv`.
+- Save the result to `us_stock_analysis/data/earnings/upcoming_earnings_<start>_<end>.csv`.
 
 ### Step 4: Enrich with web search (optional)
 

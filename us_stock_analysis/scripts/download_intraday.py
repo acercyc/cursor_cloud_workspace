@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Download 5-minute intraday data for all S&P 500 tickers for a given date."""
+"""Download 5-minute intraday data for all S&P 500 tickers for a given date.
+
+Usage (run from the us_stock_analysis/ directory):
+    python scripts/download_intraday.py 2026-02-27
+"""
 
 from __future__ import annotations
 
@@ -11,9 +15,9 @@ from pathlib import Path
 import pandas as pd
 import yfinance as yf
 
-from stock_analysis.sp500 import load_sp500_tickers
+from stock_analysis.universe import load_sp500_tickers
 
-DATA_DIR = Path(__file__).resolve().parent / "data"
+DATA_DIR = Path(__file__).resolve().parent.parent / "data" / "market"
 
 
 def download_intraday(
@@ -22,24 +26,7 @@ def download_intraday(
     interval: str = "5m",
     batch_size: int = 20,
 ) -> pd.DataFrame:
-    """Download intraday data for a list of tickers on a single date.
-
-    Parameters
-    ----------
-    tickers : list[str]
-        Ticker symbols.
-    date : str
-        Target date in YYYY-MM-DD format.
-    interval : str
-        Bar interval (default "5m").
-    batch_size : int
-        How many tickers to request per yfinance call.
-
-    Returns
-    -------
-    pd.DataFrame
-        Combined DataFrame with a "Ticker" column.
-    """
+    """Download intraday data for a list of tickers on a single date."""
     target = datetime.strptime(date, "%Y-%m-%d")
     start = target.strftime("%Y-%m-%d")
     end = (target + timedelta(days=1)).strftime("%Y-%m-%d")
@@ -121,8 +108,8 @@ def main() -> None:
         print("No data returned. The market may have been closed on that date.")
         return
 
-    out_path = DATA_DIR / f"sp500_5min_{date}.csv"
     DATA_DIR.mkdir(parents=True, exist_ok=True)
+    out_path = DATA_DIR / f"sp500_5min_{date}.csv"
     df.to_csv(out_path)
 
     n_tickers = df["Ticker"].nunique()

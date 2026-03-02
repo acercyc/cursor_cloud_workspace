@@ -1,4 +1,4 @@
-"""Fetch and cache the S&P 500 constituent list from Wikipedia."""
+"""Fetch and cache stock universe lists (S&P 500, etc.) from Wikipedia."""
 
 from __future__ import annotations
 
@@ -9,7 +9,7 @@ from pathlib import Path
 import pandas as pd
 import requests
 
-DATA_DIR = Path(__file__).resolve().parent.parent / "data"
+DATA_DIR = Path(__file__).resolve().parent.parent / "data" / "reference"
 SP500_CSV = DATA_DIR / "sp500_constituents.csv"
 SP500_TICKERS_TXT = DATA_DIR / "sp500_tickers.txt"
 
@@ -26,8 +26,8 @@ def fetch_sp500_table() -> pd.DataFrame:
 
 
 def save_sp500(df: pd.DataFrame | None = None) -> Path:
-    """Fetch (if needed) and save the S&P 500 list to data/sp500_constituents.csv
-    and data/sp500_tickers.txt. Returns the CSV path."""
+    """Fetch (if needed) and save the S&P 500 list to data/reference/sp500_constituents.csv
+    and data/reference/sp500_tickers.txt. Returns the CSV path."""
     if df is None:
         df = fetch_sp500_table()
 
@@ -46,6 +46,22 @@ def load_sp500_tickers() -> list[str]:
     if not SP500_TICKERS_TXT.exists():
         save_sp500()
     return [t.strip() for t in SP500_TICKERS_TXT.read_text().splitlines() if t.strip()]
+
+
+def load_sp500_sector_map() -> dict[str, str]:
+    """Return a dict mapping ticker -> GICS Sector from the cached CSV."""
+    if not SP500_CSV.exists():
+        save_sp500()
+    df = pd.read_csv(SP500_CSV)
+    return df.set_index("Symbol")["GICS Sector"].to_dict()
+
+
+def load_sp500_name_map() -> dict[str, str]:
+    """Return a dict mapping ticker -> company name from the cached CSV."""
+    if not SP500_CSV.exists():
+        save_sp500()
+    df = pd.read_csv(SP500_CSV)
+    return df.set_index("Symbol")["Security"].to_dict()
 
 
 if __name__ == "__main__":

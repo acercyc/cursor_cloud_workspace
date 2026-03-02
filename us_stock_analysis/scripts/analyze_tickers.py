@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """U.S. Stock Analysis CLI.
 
-Usage examples:
-    python main.py AAPL
-    python main.py MSFT GOOGL --period 6mo
-    python main.py TSLA --start 2024-01-01 --end 2025-01-01
+Usage examples (run from the us_stock_analysis/ directory):
+    python scripts/analyze_tickers.py AAPL
+    python scripts/analyze_tickers.py MSFT GOOGL --period 6mo
+    python scripts/analyze_tickers.py TSLA --start 2024-01-01 --end 2025-01-01
 """
 
 from __future__ import annotations
@@ -23,6 +23,8 @@ from stock_analysis.visualize import (
     plot_rsi,
     plot_volume,
 )
+
+OUTPUT_DIR = Path(__file__).resolve().parent.parent / "output" / "tickers"
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -44,8 +46,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--end", default=None, help="End date (YYYY-MM-DD).")
     parser.add_argument(
         "--output-dir",
-        default="output",
-        help="Directory for chart PNGs (default: output/).",
+        default=None,
+        help=f"Directory for chart PNGs (default: {OUTPUT_DIR}).",
     )
     parser.add_argument(
         "--no-charts",
@@ -98,7 +100,7 @@ def analyze_ticker(
 
 def main(argv: list[str] | None = None) -> None:
     args = parse_args(argv)
-    output_dir = Path(args.output_dir)
+    output_dir = Path(args.output_dir) if args.output_dir else OUTPUT_DIR
     generate_charts = not args.no_charts
 
     for ticker in args.tickers:

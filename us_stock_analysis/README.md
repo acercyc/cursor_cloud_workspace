@@ -8,28 +8,54 @@ Python toolkit for analyzing U.S. stocks. Fetches live market data, computes tec
 cd us_stock_analysis
 source .venv/bin/activate
 
-# Analyze individual tickers
-python main.py AAPL MSFT --period 6mo
+# Analyze individual tickers (charts saved to output/tickers/<TICKER>/)
+python scripts/analyze_tickers.py AAPL MSFT --period 6mo
 
 # Refresh S&P 500 ticker list from Wikipedia
-python -m stock_analysis.sp500
+python -m stock_analysis.universe
 
 # Download 5-minute intraday data for all S&P 500 tickers
-python download_sp500_intraday.py 2026-02-27
+python scripts/download_intraday.py 2026-02-27
+
+# Fetch upcoming earnings calendar (CSV + Markdown)
+python scripts/fetch_earnings.py --days 14
 
 # Run the sector analysis notebook
-jupyter notebook sector_analysis.ipynb
+jupyter notebook notebooks/sector_analysis.ipynb
 ```
 
-## Key files
-- `main.py` -- CLI entry point for single/multi-ticker analysis with charts
-- `stock_analysis/fetcher.py` -- Yahoo Finance data fetching via yfinance
-- `stock_analysis/analysis.py` -- Technical indicators (SMA, EMA, Bollinger, RSI, volatility, Sharpe, drawdown)
-- `stock_analysis/visualize.py` -- Matplotlib chart generation (price+MA, Bollinger, RSI, volume)
-- `stock_analysis/sp500.py` -- Fetch and cache S&P 500 constituent list from Wikipedia
-- `download_sp500_intraday.py` -- Batch download 5-min intraday bars for all S&P 500 tickers
-- `sector_analysis.ipynb` -- Jupyter notebook: sector-level intraday analysis with 6 chart types
-- `data/sp500_tickers.txt` -- Cached ticker list (one per line)
-- `data/sp500_constituents.csv` -- Full S&P 500 table (symbol, company, sector, industry, etc.)
-- `data/sp500_5min_*.csv` -- Downloaded intraday data files
-- `data/upcoming_earnings_*.csv` -- Earnings calendar snapshots
+## Project structure
+```
+us_stock_analysis/
+├── stock_analysis/              # Core library
+│   ├── universe.py              #   S&P 500 list, sector/name maps
+│   ├── fetcher.py               #   Yahoo Finance data fetching
+│   ├── earnings.py              #   Earnings calendar scanning
+│   ├── analysis.py              #   Technical indicators and stats
+│   └── visualize.py             #   Chart generation (matplotlib)
+│
+├── scripts/                     # CLI entry points
+│   ├── analyze_tickers.py       #   Single/multi-ticker analysis
+│   ├── download_intraday.py     #   Batch intraday data download
+│   └── fetch_earnings.py        #   Earnings calendar fetch
+│
+├── notebooks/                   # Jupyter notebooks
+│   └── sector_analysis.ipynb    #   Sector-level intraday analysis
+│
+├── data/                        # All data files
+│   ├── reference/               #   Slowly-changing reference data
+│   │   ├── sp500_tickers.txt
+│   │   └── sp500_constituents.csv
+│   ├── market/                  #   Downloaded price/volume data
+│   │   └── sp500_5min_*.csv
+│   └── earnings/                #   Earnings calendar snapshots
+│       ├── earnings_calendar.md
+│       └── upcoming_earnings_*.csv
+│
+├── output/                      # Generated charts
+│   ├── tickers/                 #   Per-ticker charts (AAPL/, MSFT/, ...)
+│   └── sector/                  #   Sector-level charts
+│
+├── requirements.txt
+└── README.md
+```
