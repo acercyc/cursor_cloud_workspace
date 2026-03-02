@@ -6,6 +6,7 @@
 |---|---|---|
 | New Task Folder | `.cursor/skills/new-task-folder.md` | Every time the user asks for a completely new task (not a follow-up to a previous one). Creates a dedicated folder at the repo root for all files related to that task. |
 | Progress Log | `.cursor/skills/progress-log.md` | After finishing a big task, append a short summary (Purpose, Key files, Result) to `PROGRESS.md` at the repo root. Skip for small follow-ups or conversation. |
+| Fetch Earnings Calendar | `.cursor/skills/fetch-earnings-calendar.md` | When the user asks for upcoming S&P 500 earnings dates. Scans all tickers via yfinance with known pitfall fixes (date types, dot-notation tickers). |
 
 ## Cursor Cloud specific instructions
 
