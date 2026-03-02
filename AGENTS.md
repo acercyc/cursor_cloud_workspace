@@ -5,6 +5,7 @@
 | Skill | File | When to use |
 |---|---|---|
 | New Task Folder | `.cursor/skills/new-task-folder.md` | Every time the user asks for a completely new task (not a follow-up to a previous one). Creates a dedicated folder at the repo root for all files related to that task. |
+| Progress Log | `.cursor/skills/progress-log.md` | After finishing a big task, append a short summary (Purpose, Key files, Result) to `PROGRESS.md` at the repo root. Skip for small follow-ups or conversation. |
 
 ## Cursor Cloud specific instructions
 
